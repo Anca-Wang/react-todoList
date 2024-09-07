@@ -1,11 +1,21 @@
 import './index.css'
 import { useState } from 'react'
+import { useEffect } from 'react'
 import NewForm from './NewForm'
 import ToDoList from './ToDoList'
 
+
 function App() {
 
-  const [todos, setTodos] = useState([])
+  const [todos, setTodos] = useState(() => {
+    const localValue = localStorage.getItem('ITEM')
+    if (!localValue) return []
+    return JSON.parse(localValue)
+  })
+
+  useEffect(() => {
+    localStorage.setItem('ITEM', JSON.stringify(todos))
+  }, [todos])
 
   // Toggle item states
   function toggleItem(id, state) {
